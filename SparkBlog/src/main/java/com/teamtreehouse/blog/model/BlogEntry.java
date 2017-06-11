@@ -1,10 +1,13 @@
 package com.teamtreehouse.blog.model;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
+import com.github.slugify.Slugify;
 
 public class BlogEntry 
 {
@@ -19,6 +22,14 @@ public class BlogEntry
 
 	public BlogEntry(String title, String creator, String slug, String blogEntryContent, Set<Comment> comments) 
     {
+		try 
+		{
+			Slugify slugify = new Slugify();
+			slug = slugify.slugify(this.title);
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		this.setBlogEntryID();
 		this.setDateTime();
     	this.title = title;
