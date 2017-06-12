@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teamtreehouse.blog.dao.BlogDao;
-import com.teamtreehouse.blog.dao.SimpleBlogDAO;
+import com.teamtreehouse.blog.dao.SimpleBlogDao;
+import com.teamtreehouse.blog.dao.StageData;
+import com.teamtreehouse.blog.model.BlogEntry;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -29,14 +31,6 @@ public class Main
 	
 	private static String getFlashMessage(Request req)
 	{
-		if (req.session(false)==null)
-		{
-			return null;
-		}
-		if (req.session().attributes().contains(FLASH_MESSAGE_KEY))
-		{
-			return null;
-		}
 		return (String)  req.session().attribute(FLASH_MESSAGE_KEY);
 	}
 	
@@ -56,7 +50,9 @@ public class Main
 	public static void main(String[] args) 
 	{
 		staticFileLocation("/resources/css");
-		BlogDao dao = new SimpleBlogDAO();
+		BlogDao database = new SimpleBlogDao();
+		StageData.createBlogEntries();
+		StageData.entries.forEach(e -> database.addEntry(e));
 		
 		before((req, res)->
 		{
@@ -67,49 +63,76 @@ public class Main
 			}
 		});
 		
-		before("/ideas", (req, res)->
+		before("/index", (req, res)->
+		{
+			if (req.attribute("username")==null)
+			{
+				setFlashMessage(req,"Whoops, please sign in first!");
+				res.redirect("/password");
+				halt();
+			}
+		});
+		
+		before("/", (req, res)->
 		{
 			// TODO: send message about redirect;
 			if (req.attribute("username")==null)
 			{
 				setFlashMessage(req,"Whoops, please sign in first!");
-				res.redirect("/");
+				res.redirect("/password");
 				halt();
 			}
 		});
 		
 		get("/", (req, res) -> 
 		{
-			Map<String, String> model = new HashMap<String, String>();
-			//model.put("username", req.attribute("username"));
-			//model.put("flashMessage", captureFlashMessage(req));
-			return new ModelAndView(model,"index.hbs");
-		}, 
-			new HandlebarsTemplateEngine());
+			res.redirect("/index");
+			return null;
+		});
 		
 		get("/index", (req, res) -> 
 		{
-			Map<String, String> model = new HashMap<String, String>();
-			//model.put("username", req.attribute("username"));
-			//model.put("flashMessage", captureFlashMessage(req));
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("flashMessage", captureFlashMessage(req));
+            model.put("flashMessage", captureFlashMessage(req));
+			model.put("username", req.attribute("username"));
+			model.put("entries", database.findAllEntries());
 			return new ModelAndView(model,"index.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
 		
-		get("/edit", (req, res) -> 
+		get("/detail/:slug/edit", (req, res) -> 
 		{
-			Map<String, String> model = new HashMap<String, String>();
-			//model.put("username", req.attribute("username"));
-			//model.put("flashMessage", captureFlashMessage(req));
+			
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("entry", database.findEntryBySlug(req.params(":slug")));
 			return new ModelAndView(model,"edit.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
 		
+		post("/detail/:slug/edit", (req, res)->
+		{
+			Map <String, Object> model = new HashMap<>();
+			String newContent = req.queryParams("newContent");
+			BlogEntry blogEntry = database.findEntryBySlug(req.params(":slug"));
+			database.editEntry(blogEntry, newContent);
+			res.redirect("/detail");
+			return null;
+		});
+		
+		
 		get("/detail/:slug", (req, res) -> 
 		{
-			Map<String, String> model = new HashMap<String, String>();
-			//model.put("username", req.attribute("username"));
-			//model.put("flashMessage", captureFlashMessage(req));
+			Map<String, Object> model = new HashMap<>();
+			model.put("entry", database.findEntryBySlug(req.params(":slug")));
+			return new ModelAndView(model,"detail.hbs");
+		}, 
+			new HandlebarsTemplateEngine());
+		
+		get("/detail", (req, res) -> 
+		{
+			Map<String, Object> model = new HashMap<>();
+			//model.put("entry", database.findEntryBySlug(req.params("slug")));
 			return new ModelAndView(model,"detail.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
@@ -126,21 +149,27 @@ public class Main
 		get("/password", (req, res) -> 
 		{
 			Map<String, String> model = new HashMap<String, String>();
-			//model.put("username", req.attribute("username"));
-			//model.put("flashMessage", captureFlashMessage(req));
 			return new ModelAndView(model,"password.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
-		/*
-		get("/",(req, res) ->
+		
+		post("/password", (req, res)->
 		{
-		}
-		}
-		);
-		get("/new", (req, res) ->);
-		get("/detail", (req, res) ->);
-		get("/index", (req, res) ->);
-		*/
+			Map <String, String> model = new HashMap<>();
+			String username = req.queryParams("username");
+			res.cookie("username", username);
+			if(username.equals("admin"))
+			{
+				res.redirect("/index");
+			}
+			else
+			{
+				setFlashMessage(req, "Please provide valid password.");
+				getFlashMessage(req);
+				res.redirect("/password");
+			}
+			return null;
+		});
 	}
 
 }

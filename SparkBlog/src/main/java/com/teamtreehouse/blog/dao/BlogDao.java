@@ -8,6 +8,7 @@ public interface BlogDao
 {
     boolean addEntry(BlogEntry blogEntry);
     boolean deleteEntry(BlogEntry blogEntry);
+    boolean editEntry(BlogEntry blogEntry, String newContent);
     List<BlogEntry> findAllEntries();
     BlogEntry findEntryBySlug(String slug);
     BlogEntry findEntryByID(String blogEntryID);

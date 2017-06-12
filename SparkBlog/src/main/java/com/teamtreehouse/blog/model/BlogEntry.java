@@ -20,8 +20,15 @@ public class BlogEntry
 	private Date dateTime;
 	
 
-	public BlogEntry(String title, String creator, String slug, String blogEntryContent, Set<Comment> comments) 
+	public BlogEntry(String title, String creator, String blogEntryContent, Set<Comment> comments) 
     {
+		
+		this.setBlogEntryID();
+		this.setDateTime();
+    	this.title = title;
+		this.creator = creator;
+		this.blogEntryContent = blogEntryContent;
+		this.comments = comments;
 		try 
 		{
 			Slugify slugify = new Slugify();
@@ -30,13 +37,6 @@ public class BlogEntry
 		{
 			e.printStackTrace();
 		}
-		this.setBlogEntryID();
-		this.setDateTime();
-    	this.title = title;
-		this.creator = creator;
-		this.slug = slug;
-		this.blogEntryContent = blogEntryContent;
-		this.comments = comments;
 	}
 
 	public boolean addComment(Comment comment) 
