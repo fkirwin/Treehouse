@@ -11,12 +11,15 @@ public class StageData
 	
 	public static void createBlogEntries()
 	{
-		BlogEntry be1 = new BlogEntry("Farting on the first date - Blame it on the Russians", "CNN", "blah", null);
-		BlogEntry be2 = new BlogEntry("War on Christmas", "Fox", "blah", null);
-		BlogEntry be3 = new BlogEntry("We don't care.", "American People", "blah", null);
+		BlogEntry be1 = new BlogEntry("Farting on the first date - Blame it on the Russians", "CNN", "blah");
+		BlogEntry be2 = new BlogEntry("War on Christmas", "Fox", "blah");
+		BlogEntry be3 = new BlogEntry("We don't care.", "American People", "blah");
 		entries.add(be1);
 		entries.add(be2);
 		entries.add(be3);
+		
+		
+		
 	}
 	
 }

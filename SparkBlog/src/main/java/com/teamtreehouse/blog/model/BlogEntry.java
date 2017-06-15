@@ -20,7 +20,7 @@ public class BlogEntry
 	private Date dateTime;
 	
 
-	public BlogEntry(String title, String creator, String blogEntryContent, Set<Comment> comments) 
+	public BlogEntry(String title, String creator, String blogEntryContent) 
     {
 		
 		this.setBlogEntryID();
@@ -28,7 +28,6 @@ public class BlogEntry
     	this.title = title;
 		this.creator = creator;
 		this.blogEntryContent = blogEntryContent;
-		this.comments = comments;
 		try 
 		{
 			Slugify slugify = new Slugify();

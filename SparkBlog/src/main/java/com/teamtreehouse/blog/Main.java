@@ -84,6 +84,39 @@ public class Main
 			}
 		});
 		
+		before("/detail/:slug/edit", (req, res)->
+		{
+			// TODO: send message about redirect;
+			if (req.attribute("username")==null)
+			{
+				setFlashMessage(req,"Whoops, please sign in first!");
+				res.redirect("/password");
+				halt();
+			}
+		});
+		
+		before("/new", (req, res)->
+		{
+			// TODO: send message about redirect;
+			if (req.attribute("username")==null)
+			{
+				setFlashMessage(req,"Whoops, please sign in first!");
+				res.redirect("/password");
+				halt();
+			}
+		});
+		
+		before("/detail", (req, res)->
+		{
+			// TODO: send message about redirect;
+			if (req.attribute("username")==null)
+			{
+				setFlashMessage(req,"Whoops, please sign in first!");
+				res.redirect("/password");
+				halt();
+			}
+		});
+		
 		get("/", (req, res) -> 
 		{
 			res.redirect("/index");
@@ -116,7 +149,7 @@ public class Main
 			String newContent = req.queryParams("newContent");
 			BlogEntry blogEntry = database.findEntryBySlug(req.params(":slug"));
 			database.editEntry(blogEntry, newContent);
-			res.redirect("/detail");
+			res.redirect("/detail/"+blogEntry.getSlug());
 			return null;
 		});
 		
@@ -140,11 +173,20 @@ public class Main
 		get("/new", (req, res) -> 
 		{
 			Map<String, String> model = new HashMap<String, String>();
-			//model.put("username", req.attribute("username"));
-			//model.put("flashMessage", captureFlashMessage(req));
 			return new ModelAndView(model,"new.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
+		
+		post("/new", (req, res)->
+		{
+			Map <String, Object> model = new HashMap<>();
+			String newContent = req.queryParams("newContent");
+			String title = req.queryParams("title");
+			BlogEntry blogEntry = new BlogEntry(title, req.attribute("username"),newContent);
+			database.addEntry(blogEntry);
+			res.redirect("/index");
+			return null;
+		});
 		
 		get("/password", (req, res) -> 
 		{
