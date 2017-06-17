@@ -2,8 +2,10 @@ package com.teamtreehouse.blog.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.teamtreehouse.blog.model.BlogEntry;
+import com.teamtreehouse.blog.model.Comment;
 import com.teamtreehouse.blog.model.NotFoundException;
 
 public class SimpleBlogDao implements BlogDao
@@ -48,13 +50,6 @@ public class SimpleBlogDao implements BlogDao
 	}
 
 	@Override
-	public boolean deleteEntry(BlogEntry blogEntry) 
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean editEntry(BlogEntry blogEntry, String newContent) {
 		boolean editStatus = false;
 		
@@ -63,10 +58,40 @@ public class SimpleBlogDao implements BlogDao
 			if(blogEntry.equals(be))
 			{
 				blogEntry.setBlogEntryContent(newContent);
+				editStatus = true;
 			}
 		}
 		
 		return editStatus;
 	}
+
+	@Override
+	public boolean addComment(BlogEntry blogEntry, Comment comment) {
+		boolean editStatus = false;
+		
+		for(BlogEntry be : blogEntries)
+		{
+			if(blogEntry.equals(be))
+			{
+				blogEntry.addComment(comment);
+				editStatus = true;
+			}
+		}
+		
+		return editStatus;
+	}
+
+	@Override
+	public Set<Comment> findAllComments(String slug) {
+		
+		BlogEntry blogEntryForComments = (BlogEntry) blogEntries.stream()
+				.filter(blogEntry -> blogEntry.getSlug().equals(slug))
+				.findFirst()
+				.orElseThrow(NotFoundException::new);
+		return blogEntryForComments.getComments();
+	}
+
+
+
 
 }

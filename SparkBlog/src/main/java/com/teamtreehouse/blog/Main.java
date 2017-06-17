@@ -11,6 +11,7 @@ import com.teamtreehouse.blog.dao.BlogDao;
 import com.teamtreehouse.blog.dao.SimpleBlogDao;
 import com.teamtreehouse.blog.dao.StageData;
 import com.teamtreehouse.blog.model.BlogEntry;
+import com.teamtreehouse.blog.model.Comment;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -158,6 +159,7 @@ public class Main
 		{
 			Map<String, Object> model = new HashMap<>();
 			model.put("entry", database.findEntryBySlug(req.params(":slug")));
+			model.put("comments", database.findAllComments(req.params(":slug")));
 			return new ModelAndView(model,"detail.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
@@ -165,7 +167,6 @@ public class Main
 		get("/detail", (req, res) -> 
 		{
 			Map<String, Object> model = new HashMap<>();
-			//model.put("entry", database.findEntryBySlug(req.params("slug")));
 			return new ModelAndView(model,"detail.hbs");
 		}, 
 			new HandlebarsTemplateEngine());
@@ -210,6 +211,17 @@ public class Main
 				getFlashMessage(req);
 				res.redirect("/password");
 			}
+			return null;
+		});
+		
+		post("/detail/:slug/addcomment", (req, res)->
+		{
+			Map <String, Object> model = new HashMap<>();
+			String newComment = req.queryParams("comment");
+			String creator = req.queryParams("name");
+			BlogEntry blogEntry = database.findEntryBySlug(req.params(":slug"));
+			database.addComment(blogEntry, new Comment(newComment, creator));
+			res.redirect("/detail/"+blogEntry.getSlug());
 			return null;
 		});
 	}

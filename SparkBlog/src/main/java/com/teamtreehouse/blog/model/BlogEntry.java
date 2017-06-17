@@ -2,6 +2,7 @@ package com.teamtreehouse.blog.model;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -36,12 +37,18 @@ public class BlogEntry
 		{
 			e.printStackTrace();
 		}
+		this.comments=new HashSet<Comment>();
 	}
 
 	public boolean addComment(Comment comment) 
     {
         comments.add(comment);
         return false;
+    }
+	
+	public Set<Comment> getComments() 
+    {
+        return this.comments;
     }
 
 	public String getBlogEntryID() 

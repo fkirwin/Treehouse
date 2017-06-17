@@ -1,22 +1,27 @@
 package com.teamtreehouse.blog.model;
 
+import java.util.Date;
+
 public class Comment 
 {
 	
 	private String text;
 	private String creator;
+	private Date dateTime;
 	
 
-	public Comment(String commentText) 
+	public Comment(String commentText, String creator) 
 	{
 		this.text = commentText;
+		this.creator =creator;
+		this.setDateTime();
 	}
 
-	public String getCommentText() {
+	public String getText() {
 		return text;
 	}
 
-	public void setCommentText(String commentText) 
+	public void setText(String commentText) 
 	{
 		this.text = commentText;
 	}
@@ -62,6 +67,16 @@ public class Comment
 	public String toString() 
 	{
 		return "Comment [commentText=" + text + "]";
+	}
+
+    public Date getDateTime() 
+    {
+		return dateTime;
+	}
+
+	public void setDateTime() 
+	{
+		this.dateTime = new Date();
 	}
 
 
