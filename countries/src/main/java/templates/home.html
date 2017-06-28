@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" th:href="@{/beetlejuice.jpg}" />
+    <link rel="stylesheet" th:href="@{/application.css}" />
+    <title>Countries | Home</title>
+</head>
+<body>
+    <div class="nav">
+            <div class="container">
+                <img th:src="@{/beetlejuice.jpg}"/><span>Countries</span>
+            </div>
+    </div>
+    <div class="gifs-container">
+    	<div class="col-large">
+            <div th:each="country : ${countries}">
+            	<div class="top">
+                	<a th:href="@{'/country/' + ${country.name}}" th:text="${country.name}"></a>
+                </div>
+                <div class="bottom">
+                	<a th:href="@{'/country/' + ${country.name}}">
+                    <img th:src="@{'/gifs/' + ${country.name} + '.gif'}" />
+                	</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
