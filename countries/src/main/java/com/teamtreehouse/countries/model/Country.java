@@ -50,14 +50,14 @@ public class Country
 		this.language = language;
 	}
 	
-	public String searchifyName(String name)
+	public String searchifyName()
 	{
-		if(name.equals(" "))
+		if(this.name.contains(" "))
 		{
-			return name.replace(" ", "_");
+			return this.name.replace(" ", "%20");
 		}
 		else
-			return name;
+			return this.name;
 	}
 
 }

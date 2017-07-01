@@ -31,3 +31,23 @@
     text-align: center;
 }
 
+.details {
+	background-color: #bdc29c;
+}
+
+.details .list {
+	padding-left: 10%;
+    padding-right: 10%;
+    float: center;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+	font-size:2.5em;
+}
+
+p1 {
+	font-size:1.5em;
+	font-weight:bold;
+}

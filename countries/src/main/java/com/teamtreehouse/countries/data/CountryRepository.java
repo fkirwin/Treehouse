@@ -29,7 +29,9 @@ public class CountryRepository
 		Country country = null;
 		for(Country c: ALL_COUNTRIES)
 		{
-			if(c.equals(name))
+			String cNameAlternate = c.searchifyName().toString();
+			String cName = c.getName().toString();
+			if(cName.equals(name)|| cNameAlternate.equals(name))
 				country = c;
 		}
 		return country;
