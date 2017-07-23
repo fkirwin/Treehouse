@@ -38,20 +38,8 @@ public class App
 	
 	public static void run()
 	{
-		//CountryDAO.addCountryData(new Country.CountryBuilder("ASS").build());
-		//CountryDAO.deleteCountryData(new Country.CountryBuilder("ASS").build());
-		//CountryDAO.fetchAllCountries().stream().forEach(System.out::println);
-		//Country updatedCountry = CountryDAO.findCountryByCode("ASS");
-		//updatedCountry.setName("ASSLAND");
-		//CountryDAO.editCountryData(updatedCountry);
-		//CountryDAO.fetchAllCountries().stream().forEach(System.out::println);
-		
 		Menu menu = new Menu();
 		menu.runMenu();
-		
-		
-
-		
 	}
 
 }

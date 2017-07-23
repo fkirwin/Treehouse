@@ -113,7 +113,7 @@ public class Country
 	            return this;
 	        }
 	        
-	        public CountryBuilder withPhone(BigDecimal adultLiteracyRate) 
+	        public CountryBuilder withLiteracy(BigDecimal adultLiteracyRate) 
 	        {
 	            this.adultLiteracyRate = adultLiteracyRate;
 	            return this;

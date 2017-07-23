@@ -11,13 +11,18 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.text.NumberFormatter;
 
 import com.teamtreehouse.publicdata.annotations.FieldAnnotation;
 import com.teamtreehouse.publicdata.annotations.MethodAnnotation;
+import com.teamtreehouse.publicdata.data.CountryDAO;
 import com.teamtreehouse.publicdata.model.Country;
 
 public class Formatter 
@@ -49,20 +54,22 @@ public class Formatter
 	public static String formatReportBody(List<Country> target)
 	{
 		Integer centerBoundary = formatBoundary(target);
-		Method[] methods = orderMethods();
+		List<Method> methods = orderMethods();
 		
 		for (Country country: target)
 		{
 			for(Method m : methods)
 			{
-				boolean testMethod = m.isAnnotationPresent(MethodAnnotation.class);
-				if(testMethod && m.getReturnType().equals(String.class))
+
+				//boolean testMethod = m.isAnnotationPresent(MethodAnnotation.class);
+				if(m.getReturnType().equals(String.class))
 					{
 						try 
 						{
 							String curVal = nullConverter((String) m.invoke(country));
-							int dataField = (int) centerBoundary-curVal.length();;
-							String boundary = String.format("%"+(dataField)+"s", " ");
+							int dataField = (int) centerBoundary-curVal.length();
+							String boundaryInput = "%"+(dataField)+"s";
+							String boundary = String.format(boundaryInput, " ");
 							table = table + separator + curVal + boundary;
 						} 
 						catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
@@ -70,7 +77,7 @@ public class Formatter
 								e.printStackTrace();
 						}
 					}
-				else if (testMethod && m.getReturnType().equals(BigDecimal.class))
+				else if (m.getReturnType().equals(BigDecimal.class))
 				{
 					try
 					{
@@ -98,7 +105,7 @@ public class Formatter
 			if (country.getName().length()>largestRowSize)
 				{largestRowSize = country.getName().length();}
 		}
-		return largestRowSize;
+		return largestRowSize+1;
 	}
 	
 	public static String nullConverter(String subject)
@@ -123,23 +130,42 @@ public class Formatter
 		return orderedFields;
 	}
 	
-	public static Method[] orderMethods()
+	public static List<Method> orderMethods()
 	{
 		Method[] methods =Country.class.getMethods();
-		Method[] orderedMethods = new Method[1];
+		//Method[] orderedMethods = new Method[Country.class.getMethods().length];
+		List<Method> methodsToInspect = Arrays.asList(methods);
+		List<Method> orderedMethods = new ArrayList<Method>();
+		Map<Integer, Method> ordinalMethods = new TreeMap<>();
 		
-		for(Method method : methods)
+		for(Method method : methodsToInspect)
 		{
 			MethodAnnotation ma = method.getAnnotation(MethodAnnotation.class);
 			if(method.getAnnotation(MethodAnnotation.class)==null)
 				;
 			else
-				Arrays.copyOf(orderedMethods, orderedMethods.length+1);
-				orderedMethods[ma.sortOrder()]=method;
+				ordinalMethods.put(ma.sortOrder(), method);
 		}
 		
+		ordinalMethods.entrySet().forEach(each -> orderedMethods.add(each.getValue()));
+
 		return orderedMethods;
 	}
+	
+	public static String formatStats(List<Country> target)
+	{
+		
+		String correlation = "Correlation: " + String.valueOf(CountryDAO.fetchCorrelationCoefficient());
+		String maxAdultLiteracy="Maximum Literacy: " +   String.valueOf(CountryDAO.fetchMaxAdultLiteracyRate());
+		String minAdultLiteracy="Minimum Literacy: " + String.valueOf(CountryDAO.fetchMinAdultLiteracyRate());
+		String maxInternetUsers="Maximum Internet Users: " + String.valueOf(CountryDAO.fetchMaxInternetUsers());
+		String minInternetUsers="Minimum Internet Users: " + String.valueOf(CountryDAO.fetchMinInternetUsers());
+		
+		String stats = correlation + "\n" + maxAdultLiteracy + "\n" + minAdultLiteracy + "\n" + maxInternetUsers + "\n" + minInternetUsers;
+		return stats;
+		
+	}
+	
 }
 
 
