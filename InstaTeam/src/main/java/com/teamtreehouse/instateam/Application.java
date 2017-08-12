@@ -1,9 +1,13 @@
 package com.teamtreehouse.instateam;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 
 import com.teamtreehouse.instateam.Application;
 
+@EnableAutoConfiguration
+@ComponentScan
 public class Application
 {
 

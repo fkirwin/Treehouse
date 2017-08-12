@@ -1,10 +1,10 @@
-package com.teamtreehouse.instateam.dao;
+package com.teamtreehouse.instateam.service;
 
 import java.util.List;
 
 import com.teamtreehouse.instateam.model.Project;
 
-public interface ProjectDao
+public interface ProjectService
 {
     List<Project> findAll();
     Project findById(Long id);

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,22 +35,36 @@ public class CollaboratorDaoImp implements CollaboratorDao
 	@Override
 	public Collaborator findById(Long id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+        Session session = sessionFactory.openSession();
+        Collaborator collaborator = session.get(Collaborator.class,id);
+        Hibernate.initialize(collaborator.getRole());
+        session.close();
+        
+        return collaborator;
 	}
 
 	@Override
-	public void save(Collaborator role)
+	public void save(Collaborator collaborator)
 	{
-		// TODO Auto-generated method stub
+
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.saveOrUpdate(collaborator);
+        session.getTransaction().commit();
+
+        session.close();
 		
 	}
 
 	@Override
-	public void delete(Collaborator role)
+	public void delete(Collaborator collaborator)
 	{
-		// TODO Auto-generated method stub
-		
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(collaborator);
+        session.getTransaction().commit();
+
+        session.close();
 	}
 	
 	

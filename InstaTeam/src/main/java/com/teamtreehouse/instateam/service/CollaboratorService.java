@@ -1,10 +1,10 @@
-package com.teamtreehouse.instateam.dao;
+package com.teamtreehouse.instateam.service;
 
 import java.util.List;
 
 import com.teamtreehouse.instateam.model.Collaborator;
 
-public interface CollaboratorDao
+public interface CollaboratorService
 {
     List<Collaborator> findAll();
     Collaborator findById(Long id);
