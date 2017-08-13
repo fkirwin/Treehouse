@@ -10,11 +10,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.teamtreehouse.instateam.dao.ProjectDao;
 import com.teamtreehouse.instateam.model.Project;
 
-@Repository
+@Service
 public class ProjectServiceImp implements ProjectService
 {
 	@Autowired

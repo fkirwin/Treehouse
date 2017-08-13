@@ -31,6 +31,7 @@ public class Collaborator
     @ManyToOne
     private Role role;
     
+    
     Collaborator(){}
 
 	public Long getId()
