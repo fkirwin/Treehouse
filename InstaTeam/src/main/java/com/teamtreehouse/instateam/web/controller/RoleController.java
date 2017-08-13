@@ -17,7 +17,23 @@ public class RoleController
 	@RequestMapping("/roles")
     public String listRoles(Model model) 
     {
-        
+		List<Role> roles = roleService.findAll();
         return "role/roles";
     }
+	
+	/*
+    @RequestMapping("categories/add")
+    public String formNewCategory(Model model) {
+        // TODO: Add model attributes needed for new form
+        if(!model.containsAttribute("category")) {
+            model.addAttribute("category",new Category());
+        }
+        model.addAttribute("colors", Color.values());
+        model.addAttribute("action","/categories");
+        model.addAttribute("heading","New Category");
+        model.addAttribute("submit","Add");
+
+        return "category/form";
+    }
+    */
 }

@@ -1,5 +1,6 @@
 package com.teamtreehouse.instateam.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,12 @@ public class Collaborator
     
     Collaborator(){}
 
+	public Collaborator(Builder builder)
+	{
+		this.name=builder.name;
+		this.role=builder.role;
+	}
+
 	public Long getId()
 	{
 		return id;
@@ -63,6 +70,34 @@ public class Collaborator
 	{
 		this.role = role;
 	};
+	
+	public static class Builder
+	{
+        private Role role;
+        private String name;
+
+        public Builder() 
+        {
+            ;
+        }
+
+        public Builder withName(String name) 
+        {
+            this.name = name;
+            return this;
+        }
+        
+        public Builder withRole(Role role)
+        {
+        	this.role = role;
+            return this;
+        }
+        
+        public Collaborator build() 
+        {
+            return new Collaborator(this);
+        }
+	}
     
     
 }
