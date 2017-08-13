@@ -1,5 +1,8 @@
 package com.teamtreehouse.instateam.bootstrap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -24,26 +27,52 @@ public class Data implements ApplicationRunner
 	private RoleService rs;
 	
 	
-	public void populateCollaborator()
+	public Collaborator populateCollaborator(String name, Role role)
 	{
-		Collaborator collaborator = new Collaborator.Builder().withName("Tom").withRole(Rolie).build();
+		Collaborator collaborator = new Collaborator.CollaboratorBuilder().withName(name).withRole(role).build();
 		cs.save(collaborator);
+		
+		return collaborator;
 	}
 	
-	public void populateRole(Role role)
+	public Role populateRole(String name)
 	{
+		Role role = new Role.RoleBuilder().withName(name).build();
 		rs.save(role);
+		
+		return role;
 	}
 	
-	public void populateProject(Project project)
+	public Project populateProject(String name, String status, String description, List<Role>roles, List<Collaborator> collaborators)
 	{
+		Project project = new Project.ProjectBuilder()
+				.withName(name)
+				.withStatus(status)
+				.withDescription(description)
+				.withRoles(roles)
+				.withCollaborators(collaborators)
+				.build();
 		ps.save(project);
+		
+		return project;
 	}
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		//Precedence role before collaborator before project
+		List<Role> roles= new ArrayList<Role>();
+		roles.add(populateRole("Developer"));
+		roles.add(populateRole("QA"));
+		roles.add(populateRole("Scrum Master"));
+		
+		List<Collaborator> collaborators = new ArrayList<Collaborator>();
+		collaborators.add(populateCollaborator("Tom", roles.get(0)));
+		collaborators.add(populateCollaborator("Dick", roles.get(1)));	
+		collaborators.add(populateCollaborator("Harry", roles.get(2)));
+
+
+		populateProject("Website", "Active", "Making a website", roles, collaborators);
+		populateProject("MobileApp", "Active", "Making a mobile app", roles, collaborators);
 		
 	}
 	

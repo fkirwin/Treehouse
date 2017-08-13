@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.teamtreehouse.instateam.model.Collaborator.CollaboratorBuilder;
+
 @Entity
 public class Role
 {
@@ -21,6 +23,11 @@ public class Role
     
     //Default constructor
     Role(){};
+
+	public Role(RoleBuilder builder)
+	{
+		this.name=builder.name;
+	}
 
 	public Long getId()
 	{
@@ -42,4 +49,24 @@ public class Role
 		this.name = name;
 	}
     
+	public static class RoleBuilder
+	{
+        private String name;
+
+        public RoleBuilder() 
+        {
+            ;
+        }
+
+        public RoleBuilder withName(String name) 
+        {
+            this.name = name;
+            return this;
+        }
+        
+        public Role build() 
+        {
+            return new Role(this);
+        }
+	}
 }

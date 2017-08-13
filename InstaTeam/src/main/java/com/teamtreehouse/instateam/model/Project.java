@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
+import com.teamtreehouse.instateam.model.Role.RoleBuilder;
+
 @Entity
 public class Project
 {
@@ -37,6 +39,15 @@ public class Project
 
     Project(){};
     
+	public Project(ProjectBuilder projectBuilder)
+	{
+		this.name=projectBuilder.name;
+		this.status=projectBuilder.status;
+		this.description=projectBuilder.description;
+		this.rolesNeeded=projectBuilder.roles;
+		this.collaborators=projectBuilder.collaborators;
+	}
+
 	public Long getId()
 	{
 		return id;
@@ -95,6 +106,55 @@ public class Project
 	public void setCollaborators(List<Collaborator> collaborators)
 	{
 		this.collaborators = collaborators;
+	}
+	
+	public static class ProjectBuilder
+	{
+        private String name;
+        private String status;
+        private String description;
+        private List<Role> roles;
+        private List<Collaborator> collaborators;
+
+        public ProjectBuilder() 
+        {
+            ;
+        }
+
+        public ProjectBuilder withName(String name) 
+        {
+            this.name = name;
+            return this;
+        }
+        
+        public ProjectBuilder withStatus(String status)
+        {
+        	this.status=status;
+        	return this;
+        }
+        
+        public ProjectBuilder withDescription(String description)
+        {
+        	this.description=description;
+        	return this;
+        }
+        
+        public ProjectBuilder withRoles(List<Role> roles)
+        {
+        	this.roles = roles;
+        	return this;
+        }
+        
+        public ProjectBuilder withCollaborators(List<Collaborator> collaborators)
+        {
+        	this.collaborators=collaborators;
+        	return this;
+        }
+        
+        public Project build() 
+        {
+            return new Project(this);
+        }
 	}
     
     

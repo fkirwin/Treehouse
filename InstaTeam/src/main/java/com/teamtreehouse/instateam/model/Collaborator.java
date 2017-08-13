@@ -35,7 +35,7 @@ public class Collaborator
     
     Collaborator(){}
 
-	public Collaborator(Builder builder)
+	public Collaborator(CollaboratorBuilder builder)
 	{
 		this.name=builder.name;
 		this.role=builder.role;
@@ -71,23 +71,23 @@ public class Collaborator
 		this.role = role;
 	};
 	
-	public static class Builder
+	public static class CollaboratorBuilder
 	{
         private Role role;
         private String name;
 
-        public Builder() 
+        public CollaboratorBuilder() 
         {
             ;
         }
 
-        public Builder withName(String name) 
+        public CollaboratorBuilder withName(String name) 
         {
             this.name = name;
             return this;
         }
         
-        public Builder withRole(Role role)
+        public CollaboratorBuilder withRole(Role role)
         {
         	this.role = role;
             return this;
