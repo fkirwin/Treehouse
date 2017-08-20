@@ -40,10 +40,11 @@
                         	</ul>
                      	</div>
               </form>
-                    <form method="post" th:object="${role}">
+                    <form method="post" th:object="${role}" th:action="@{${action}}">
                     <div class="actions add-new-role">
-                        <input type="text" placeholder="New Role..."></input>
-                        <a class="button" href="#">Add</a>
+                        <input type="text" placeholder="New Role..." th:field="*{name}"></input>
+                        <button class="button" type="submit">Save</button>
+                       
                     </div>
                 </form>
             </div>
