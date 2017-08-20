@@ -1,5 +1,6 @@
 package com.teamtreehouse.instateam.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,6 @@ public class Collaborator
     @Size(min = 1, max = 50)
     private String name;
     
-    @Null
     @ManyToOne
     private Role role;
     

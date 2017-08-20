@@ -1,5 +1,6 @@
 package com.teamtreehouse.instateam.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class Project
     @Size(min = 1, max = 50)
     private String name;
     
-    @Null
+    @NotNull
     private String description;
     
-    @Null
+    @NotNull
     private String status;
     
     @ManyToMany()

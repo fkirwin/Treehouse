@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import com.teamtreehouse.instateam.model.Collaborator;
 import com.teamtreehouse.instateam.model.Project;
@@ -17,6 +18,7 @@ import com.teamtreehouse.instateam.service.ProjectServiceImp;
 import com.teamtreehouse.instateam.service.RoleService;
 import com.teamtreehouse.instateam.service.RoleServiceImp;
 
+@Component
 public class Data implements ApplicationRunner
 {
 	@Autowired
@@ -60,19 +62,20 @@ public class Data implements ApplicationRunner
 	@Override
 	public void run(ApplicationArguments args) throws Exception
 	{
-		List<Role> roles= new ArrayList<Role>();
-		roles.add(populateRole("Developer"));
-		roles.add(populateRole("QA"));
-		roles.add(populateRole("Scrum Master"));
 		
-		List<Collaborator> collaborators = new ArrayList<Collaborator>();
-		collaborators.add(populateCollaborator("Tom", roles.get(0)));
-		collaborators.add(populateCollaborator("Dick", roles.get(1)));	
-		collaborators.add(populateCollaborator("Harry", roles.get(2)));
-
-
-		populateProject("Website", "Active", "Making a website", roles, collaborators);
-		populateProject("MobileApp", "Active", "Making a mobile app", roles, collaborators);
+			List<Role> roles= new ArrayList<Role>();
+			roles.add(populateRole("Developer"));
+			roles.add(populateRole("QA"));
+			roles.add(populateRole("Scrum Master"));
+			
+			List<Collaborator> collaborators = new ArrayList<Collaborator>();
+			collaborators.add(populateCollaborator("Tom", roles.get(0)));
+			collaborators.add(populateCollaborator("Dick", roles.get(1)));	
+			collaborators.add(populateCollaborator("Harry", roles.get(2)));
+	
+	
+			populateProject("Website", "Active", "Making a website", roles, collaborators);
+			populateProject("MobileApp", "Active", "Making a mobile app", roles, collaborators);
 		
 	}
 	

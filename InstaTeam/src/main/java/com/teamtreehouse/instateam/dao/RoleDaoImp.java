@@ -26,7 +26,7 @@ public class RoleDaoImp implements RoleDao
 		Session session = sessionFactory.openSession();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
 		CriteriaQuery<Role> criteria = builder.createQuery(Role.class);
-		criteria.from(Collaborator.class);
+		criteria.from(Role.class);
 		List<Role> roles = session.createQuery(criteria).getResultList();
 		session.close();
 		
