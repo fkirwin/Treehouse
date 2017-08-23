@@ -33,7 +33,7 @@ public class Collaborator
     private Role role;
     
     
-    Collaborator(){}
+    public Collaborator(){}
 
 	public Collaborator(CollaboratorBuilder builder)
 	{

@@ -6,8 +6,8 @@
         <title>InstaTeam</title>
         <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'></link>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
-        <link rel="stylesheet" href="css/normalize.css"></link>
-        <link rel="stylesheet" href="css/site.css"></link>
+        <link rel="stylesheet" href="/css/normalize.css"></link>
+        <link rel="stylesheet" href="/css/site.css"></link>
     </head>
     <body>
         <header>
@@ -20,68 +20,51 @@
         </header>
         <nav>
             <ul>
-                <li><a href="index.html">Projects</a></li>
-                <li class="selected"><a href="collaborators.html">Collaborators</a></li>
-                <li><a href="roles.html">Roles</a></li>
+                <li><a href="/index">Projects</a></li>
+                <li class="selected"><a href="/collaborators">Collaborators</a></li>
+                <li><a href="/roles">Roles</a></li>
             </ul>
         </nav>
         <section>
-            <div class="container wrapper">
-                <form>
+            <div class="container wrapper" >
+                <form method="post">
                     <h2>Manage Collaborators</h2>
-                    <ul class="checkbox-list">
+                    <ul class="checkbox-list" th:each = "collaborator : ${collaborators}">
+                    <button class="button" type="submit" formaction="@{|/collaborators/${collaborator.id}/edit|}">Save</button>
                         <li>
-                            <span class="primary">Michael Pemulius</span>
+                            <input class="primary" th:placeholder="${collaborator.name}"></input>
+                             
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select>
-                                    <option value="#" selected="">Designer</option>
-                                    <option value="#">Developer</option>
-                                    <option value="#">QA</option>
-                                    <option value="#">DevOps</option>
+                                <div th:each = "role : ${roles}" >
+                                    <option th:value="${role.name}" th:text="${role.name}"></option>
+                                    </div>
                                 </select>
+                               
                             </div>
-                        </li>
-                        <li>
-                            <span class="primary">Don Gately</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Designer</option>
-                                    <option value="#" selected="">Developer</option>
-                                    <option value="#">QA</option>
-                                    <option value="#">DevOps</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="primary">Joelle Van Dyne</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Designer</option>
-                                    <option value="#">Developer</option>
-                                    <option value="#" selected="">QA</option>
-                                    <option value="#">DevOps</option>
-                                </select>
-                            </div>
+                            
                         </li>
                     </ul>
-                    <div class="actions add-new-collaborator">
+                    
+                </form>
+            </div>
+        </section>
+        <section>
+            <div class="container wrapper">
+                <form>
+                   <div class="actions add-new-collaborator">
                         <input type="text" placeholder="Name..."></input>
                         <div class="custom-select">
                             <span class="dropdown-arrow"></span>
-                            <select>
-                                <option value="#">Role...</option>
-                                <option value="#">Developer</option>
-                                <option value="#">Designer</option>
-                                <option value="#">QA</option>
-                                <option value="#">DevOps</option>
-                                <option value="#">Copywriter</option>
-                            </select>
+							    <select>
+                                <div th:each = "role : ${roles}" >
+                                    <option th:value="${role.name}" th:text="${role.name}"></option>
+                                    </div>
+                                </select>
                         </div>
                         <a class="button" href="#">Add</a>
-                    </div>
+					</div>
                 </form>
             </div>
         </section>
