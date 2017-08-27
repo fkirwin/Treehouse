@@ -50,4 +50,11 @@ public class RoleServiceImp implements RoleService
 	{
         roleDao.delete(role);
 	}
+
+	@Override
+	public Role findByName(String name)
+	{
+		// TODO Auto-generated method stub
+		return roleDao.findByName(name);
+	}
 }

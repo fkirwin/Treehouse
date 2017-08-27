@@ -27,41 +27,29 @@
         </nav>
         <section>
             <div class="container wrapper" >
-                <form method="post">
-                    <h2>Manage Collaborators</h2>
-                    <ul class="checkbox-list" th:each = "collaborator : ${collaborators}">
-                    <a class="button" type="submit" th:href="@{|/collaborators/${collaborator.id}/edit|}">Edit</a>
+                <form method="post" th:action="@{|/collaborators/${collaborator.id}/update|}" th:object="${collaborator}">
+                	<input type="hidden" th:field="*{id}"/></input>
+                    <h2>Edit Collaborator</h2>
+                    <ul class="checkbox-list">
+                    <button class="button" type="submit">Save</button>
                         <li>
-                            <span class="primary" th:text="${collaborator.name}"></span>
+                            <input class="primary" th:placeholder="*{name}" th:field="*{name}" ></input>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select>
-                                    <option th:value="${collaborator.role.name}" th:text="${collaborator.role.name != null} ? ${collaborator.role.name} : 'Not set'"></option>
+                                <div th:each = "role : ${roles}" >
+                                    <option th:value="${role.id}" th:text="${role.name}" name="roleId" id="roleId">
+                                    	<input type="text" th:field="${role.id}"/>
+                                    </option>
+                                    </div>
                                 </select>
-                               
                             </div>
-                            
                         </li>
                     </ul>
                     
                 </form>
             </div>
         </section>
-        <section>
-            <div class="container wrapper">
-                <form method="post" th:action="@{|/collaborators/add|}" th:object="${collaborator}" id="collaborator">
-                   <div class="actions add-new-collaborator">
-                        <input type="text" placeholder="Name..." th:field="*{name}"></input>
-                        <div class="custom-select">
-                            <span class="dropdown-arrow"></span>
-							    <select id="collaboratorrole" name="collaboratorrole">
-                                    <option th:each = "role : ${roles}" th:value="${role.id}" th:text="${role.name}" name="roleid"></option>
-                                </select>
-                        </div>
-                        <button class="button" type="submit">Add</button>
-					</div>
-                </form>
-            </div>
-        </section>
+
     </body>
 </html>

@@ -66,4 +66,14 @@ public class RoleDaoImp implements RoleDao
         session.close();
 		
 	}
+
+	@Override
+	public Role findByName(String name)
+	{
+		Session session = sessionFactory.openSession();
+		Role role = session.get(Role.class, name);
+		session.close();
+		
+		return role;
+	}
 }
