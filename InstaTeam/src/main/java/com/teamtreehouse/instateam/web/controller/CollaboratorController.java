@@ -62,12 +62,12 @@ public class CollaboratorController
     	return "redirect:/collaborators";
     }
     
-    @RequestMapping(value = "/collaborators/{collaboratorID}/edit")
+    @RequestMapping(value ="/collaborators/{collaboratorId}/edit")
     public String editCollaborator(@PathVariable Long collaboratorId,  Model model) 
     {
-    	 if(!model.containsAttribute("category")) {
-             model.addAttribute("category",collaboratorService.findById(collaboratorId));
-         }
+             model.addAttribute("collaborator",collaboratorService.findById(collaboratorId));
+         
+    	 
     	
     	return "collaborator/editcollaborator";
     }

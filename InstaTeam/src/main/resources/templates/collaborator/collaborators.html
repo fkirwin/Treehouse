@@ -30,7 +30,7 @@
                 <form method="post">
                     <h2>Manage Collaborators</h2>
                     <ul class="checkbox-list" th:each = "collaborator : ${collaborators}">
-                    <a class="button" type="submit" th:href="@{|/collaborators/${collaborator.id}/edit|}">Edit</a>
+                    <a class="button" th:href="@{|/collaborators/${collaborator.id}/edit|}">Edit</a>
                         <li>
                             <span class="primary" th:text="${collaborator.name}"></span>
                             <div class="custom-select">
