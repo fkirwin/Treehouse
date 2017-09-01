@@ -65,17 +65,24 @@ public class CollaboratorController
     @RequestMapping(value ="/collaborators/{collaboratorId}/edit")
     public String editCollaborator(@PathVariable Long collaboratorId,  Model model) 
     {
-             model.addAttribute("collaborator",collaboratorService.findById(collaboratorId));
-         
-    	 
+    	if(!model.containsAttribute("roles"))
+    	{
+    	List<Role> roles = roleService.findAll();
+		model.addAttribute("roles", roles);
+    	}
+    	
+        model.addAttribute("collaborator",collaboratorService.findById(collaboratorId));
     	
     	return "collaborator/editcollaborator";
     }
     
     @RequestMapping(value = "/collaborators/update", method = RequestMethod.POST)
-    public String updateCollaborator(@Valid Collaborator collaborator,  BindingResult result,  Model model) 
+    public String updateCollaborator(@Valid Collaborator collaborator, @RequestParam(name="collaboratorrole") String roleId, BindingResult result,  Model model) 
     {
     	
+    	Role role = roleService.findById(Long.parseUnsignedLong(roleId));
+    	collaborator.setRole(role);
+    	collaboratorService.save(collaborator);
     	
     	
     	return "redirect:/collaborators";

@@ -27,17 +27,17 @@
         </nav>
         <section>
             <div class="container wrapper" >
-                <form method="post" th:action="@{|/collaborators/${collaborator.id}/edit|}" th:object="${collaborator}" id="collaborator">
+                <form method="post" th:action="@{|/collaborators/update|}" th:object="${collaborator}" id="collaborator">
                    <div class="actions add-new-collaborator">
                         <input type="text" placeholder="*{name}" th:field="*{name}"></input>
                         <div class="custom-select">
                             <span class="dropdown-arrow"></span>
                                 <select id="collaboratorrole" name="collaboratorrole">
-                                	<option th:text="${collaborator.role.name}"></option>
+                                	<option th:text="${collaborator.role.name}" th:value="${collaborator.role.id}" name="roleid"></option>
                                     <option th:each = "role : ${roles}" th:value="${role.id}" th:text="${role.name}" name="roleid"></option>
                                 </select>
                         </div>
-                        <button class="button" type="submit">Add</button>
+                        <button class="button" type="submit">Save</button>
                   </div>
                 </form>
             </div>
