@@ -38,14 +38,16 @@ public class CollaboratorController
 		{
             model.addAttribute("collaborator", new Collaborator());
         }
+		//Always want current roles
+		List<Role> roles = roleService.findAll();
+		model.addAttribute("roles", roles);
+		//Always want current collaborators
 		List<Collaborator> collaborators = collaboratorService.findAll();
 		model.addAttribute("collaborators", collaborators);
-		model.addAttribute("action","/collaborators/update");
+		
+		//model.addAttribute("action","/collaborators/update");
         model.addAttribute("heading","UpdateCollaborators");
         model.addAttribute("submit","Save");
-        
-        List<Role> roles = roleService.findAll();
-		model.addAttribute("roles", roles);
         
         return "collaborator/collaborators";
     }
@@ -54,8 +56,19 @@ public class CollaboratorController
     public String addCollaborator(@Valid Collaborator collaborator,  
     								@RequestParam(name="collaboratorrole") String roleId,
     								BindingResult result,  
-    								Model model) 
+    								Model model,
+    								RedirectAttributes redirectAttributes) 
     {
+    	 if(result.hasErrors()) {
+             // Include validation errors upon redirect
+             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.category",result);
+
+             // Add  category if invalid was received
+             redirectAttributes.addFlashAttribute("category",collaborator);
+
+             // Redirect back to the form
+             return "redirect:/collaborators";
+         }
     	Role role = roleService.findById(Long.parseUnsignedLong(roleId));
     	collaborator.setRole(role);
 		collaboratorService.save(collaborator);
@@ -76,10 +89,26 @@ public class CollaboratorController
     	return "collaborator/editcollaborator";
     }
     
-    @RequestMapping(value = "/collaborators/update", method = RequestMethod.POST)
-    public String updateCollaborator(@Valid Collaborator collaborator, @RequestParam(name="collaboratorrole") String roleId, BindingResult result,  Model model) 
+    @RequestMapping(value = "/collaborators/{collaboratorId}/update", method = RequestMethod.POST)
+    public String updateCollaborator(@Valid Collaborator collaborator, 
+    								@RequestParam(name="collaboratorrole") String roleId, 
+    								BindingResult result,  
+    								Model model, 
+    								RedirectAttributes redirectAttributes) 
     {
-    	
+        
+       	 if(result.hasErrors()) 
+       	 {
+                // Include validation errors upon redirect
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.category",result);
+
+                // Add  category if invalid was received
+                redirectAttributes.addFlashAttribute("category",collaborator);
+
+                // Redirect back to the form
+                return "redirect:/collaborators/{collaboratorId}/edit";
+          }
+
     	Role role = roleService.findById(Long.parseUnsignedLong(roleId));
     	collaborator.setRole(role);
     	collaboratorService.save(collaborator);
@@ -87,20 +116,5 @@ public class CollaboratorController
     	
     	return "redirect:/collaborators";
     }
+    
 }
-
-
-/*
-@RequestMapping(value = "/collaborators/add", method = RequestMethod.POST)
-public String addCollaborator(@ModelAttribute("collaborator") Collaborator collaborator,  
-								@RequestParam(name="collaboratorrole") String roleId,
-								BindingResult result,  
-								Model model) 
-{
-	Role role = roleService.findById(Long.parseUnsignedLong(roleId));
-	collaborator.setRole(role);
-	
-	collaboratorService.save(collaborator);
-	return "redirect:/collaborators";
-}
-*/

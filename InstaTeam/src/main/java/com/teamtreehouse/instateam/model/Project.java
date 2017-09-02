@@ -38,7 +38,7 @@ public class Project
     @ManyToMany()
     private List<Collaborator> collaborators = new ArrayList<>();
 
-    Project(){};
+    public Project(){};
     
 	public Project(ProjectBuilder projectBuilder)
 	{

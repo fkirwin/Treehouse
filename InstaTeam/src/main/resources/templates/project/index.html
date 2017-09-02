@@ -6,8 +6,8 @@
         <title>InstaTeam</title>
         <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'></link>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
-        <link rel="stylesheet" href="css/normalize.css"></link>
-        <link rel="stylesheet" href="css/site.css"></link>
+        <link rel="stylesheet" href="/css/normalize.css"></link>
+        <link rel="stylesheet" href="/css/site.css"></link>
     </head>
     <body>
         <header>
@@ -28,25 +28,10 @@
         <section>
             <div class="container wrapper">
                 <div class="project-list">
-                    <div class="project">
-                        <h2><a href="project_detail.html">Website Project</a></h2>
-                        <p>Design and build a custom website</p>
-                        <span class="tag active">Active</span>
-                    </div>
-                    <div class="project">
-                        <h2><a href="#">App Project</a></h2>
-                        <p>Design and build a web app</p>
-                        <span class="tag active">Active</span>
-                    </div>
-                    <div class="project">
-                        <h2><a href="#">Poster Design</a></h2>
-                        <p>Create a poster design</p>
-                        <span class="tag archived">Archived</span>
-                    </div>
-                    <div class="project">
-                        <h2><a href="#">Mobile App</a></h2>
-                        <p>Design and build a mobile app</p>
-                        <span class="tag active">Active</span>
+                   <div class="project" th:each = "project : ${projects}">
+                        <h2><a th:text ="${project.name}" href="project_detail.html"></a></h2>
+                        <p title="{project.description}"></p>
+                        <span th:if="${project.status=='Active'}" class="tag active">Active</span>
                     </div>
                 </div>
             </div>

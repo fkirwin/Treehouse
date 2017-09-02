@@ -27,14 +27,15 @@
         </nav>
         <section>
             <div class="container wrapper" >
-                <form method="post" th:action="@{|/collaborators/update|}" th:object="${collaborator}" id="collaborator">
+                <form method="post" th:action="@{|/collaborators/${collaborator.id}/update|}" th:object="${collaborator}">
                    <div class="actions add-new-collaborator">
+                   		<input id="collaborator" th:field="*{id}" type="hidden"></input>
                         <input type="text" placeholder="*{name}" th:field="*{name}"></input>
                         <div class="custom-select">
                             <span class="dropdown-arrow"></span>
                                 <select id="collaboratorrole" name="collaboratorrole">
                                 	<option th:text="${collaborator.role.name}" th:value="${collaborator.role.id}" name="roleid"></option>
-                                    <option th:each = "role : ${roles}" th:value="${role.id}" th:text="${role.name}" name="roleid"></option>
+                                    <option th:if="${!role.name.equals(collaborator.role.name)}" th:each = "role : ${roles}" th:value="${role.id}" th:text="${role.name}" name="roleid"></option>
                                 </select>
                         </div>
                         <button class="button" type="submit">Save</button>
