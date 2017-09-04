@@ -74,8 +74,8 @@ public class Data implements ApplicationRunner
 			collaborators.add(populateCollaborator("Harry", roles.get(2)));
 	
 	
-			populateProject("Website", "Active", "Making a website", roles, collaborators);
-			populateProject("MobileApp", "Active", "Making a mobile app", roles, collaborators);
+			populateProject("Website", "active", "Making a website", roles, collaborators);
+			populateProject("MobileApp", "active", "Making a mobile app", roles, collaborators);
 		
 	}
 	

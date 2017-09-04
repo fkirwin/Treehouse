@@ -33,7 +33,7 @@ public class Project
     private String status;
     
     @ManyToMany()
-    private List<Role> rolesNeeded = new ArrayList<>();
+    private List<Role> rolesNeeded = new ArrayList<Role>();
     
     @ManyToMany()
     private List<Collaborator> collaborators = new ArrayList<>();

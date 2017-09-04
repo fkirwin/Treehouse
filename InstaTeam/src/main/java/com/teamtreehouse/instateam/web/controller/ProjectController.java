@@ -1,11 +1,18 @@
 package com.teamtreehouse.instateam.web.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.teamtreehouse.instateam.model.Collaborator;
 import com.teamtreehouse.instateam.model.Project;
@@ -25,11 +32,11 @@ public class ProjectController
 	private ProjectService projectService;
 	
 	@RequestMapping("/index")
-    public String projectIndex(Model model) 
+    public String getProjectIndex(Model model) 
     {   
 		if(!model.containsAttribute("project")) 
 		{
-            model.addAttribute("project", new Project());
+            model.addAttribute("project", new Project.ProjectBuilder().withName("New Project").build());
         }
 
 		List<Role> roles = roleService.findAll();
@@ -44,22 +51,72 @@ public class ProjectController
         return "project/index";
     }
 	
-	@RequestMapping("/edit_project")
+	@RequestMapping("/addproject")
+	public String addProject(Model model)
+	{
+		if(!model.containsAttribute("project")) 
+		{
+            model.addAttribute("project", new Project.ProjectBuilder().withName("New Project").build());
+        }
+		
+		//Always want current roles
+		List<Role> roles = roleService.findAll();
+		
+		//get existing attribute for posting
+		//Map<String, Object> modelAttributes = model.asMap();
+		//Project targetProject = (Project) modelAttributes.get("project");
+		
+		//Add model attributes
+		model.addAttribute("roles", roles);
+		model.addAttribute("action","/saveaddedproject");
+
+		
+		return "project/edit_project";
+	}
+	
+	@RequestMapping(value="/saveaddedproject", method = RequestMethod.POST)
+    public String saveAddedProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) 
+    {   
+		projectService.save(project);
+        return "redirect:/index";
+    }
+	
+	@RequestMapping("/editproject")
     public String editProject(Model model) 
     {   
-        return "edit_project";
+        return "project/edit_project";
     }
 	
-	@RequestMapping("/project_detail")
+	@RequestMapping(value="/editproject/{projectId}", method = RequestMethod.POST)
+    public String saveEditedProject(@Valid Project project, Model model) 
+    {   
+		projectService.save(project);
+        return "redirect:/index";
+    }
+	
+	
+	@RequestMapping("/projectdetail")
     public String getProjectDetails(Model model) 
     {   
-        return "project_detail";
+        return "project/project_detail";
     }
 	
-	@RequestMapping("/project_collaborators")
+	@RequestMapping("/projectcollaborators")
     public String getProjectCollaborators(Model model) 
     {   
-        return "project_collaborators";
+        return "project/project_collaborators";
+    }
+	
+	@RequestMapping("/addprojectcollaborators")
+    public String addProjectCollaborators(Model model) 
+    {   
+        return "project/project_collaborators";
+    }
+	
+	@RequestMapping("/removeprojectcollaborators")
+    public String removeProjectCollaborators(Model model) 
+    {   
+        return "project/project_collaborators";
     }
     
 }

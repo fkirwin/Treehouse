@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="site-header">
                     <a class="logo" href="index.html">InstaTeam</a>
-                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
+                    <a class="new-project button icon-left" th:href="@{|/addproject|}"><i class="material-icons">add</i> New Project</a>
                 </div>
             </div>
         </header>
@@ -29,9 +29,11 @@
             <div class="container wrapper">
                 <div class="project-list">
                    <div class="project" th:each = "project : ${projects}">
-                        <h2><a th:text ="${project.name}" href="project_detail.html"></a></h2>
+                        <h2><a th:text ="${project.name}" th:href="@{|/addproject|}"></a></h2>
                         <p title="{project.description}"></p>
-                        <span th:if="${project.status=='Active'}" class="tag active">Active</span>
+                        <span th:if="${project.status=='active'}" class="tag active">Active</span>
+                        <span th:if="${project.status=='archived'}" class="tag archived">Archived</span>
+                        <span th:if="${project.status=='Not Started'}" class="tag archived">Not Started</span>
                     </div>
                 </div>
             </div>
