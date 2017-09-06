@@ -52,16 +52,8 @@
                         <label for="project_roles">Project Roles:</label>
                         <ul class="checkbox-list" th:each = "role : ${roles}">
                             <li>
-                            	 <select type="hidden" th:field="*{rolesNeeded[__${index}__].id}">
-                         			<option th:value="${role.id}"></option>
-                     			</select>
-                  	
-                     			<select type="hidden" th:field="*{rolesNeeded[__${index}__].name}">
-                         			<option th:value="${role.name}"></option>
-                     			</select>
-                            	
-                                <input type="checkbox" name="project_roles" th:field="*{rolesNeeded[__${index}__]}" th:value="${role}"></input>
-                                <span class="primary" th:text="${role.name}" th:field="${role.id}"></span>
+                             <input type="checkbox" th:field="*{rolesNeeded}" th:value="${role}"></input>
+    							<span th:for="${#ids.prev('rolesNeeded')}"  th:text="${role.name}" th:id="${role.id}"></span>
                             </li>
                         </ul>
                     </div>

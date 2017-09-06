@@ -1,5 +1,6 @@
 package com.teamtreehouse.instateam.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.teamtreehouse.instateam.model.Collaborator;
@@ -36,7 +38,10 @@ public class ProjectController
     {   
 		if(!model.containsAttribute("project")) 
 		{
-            model.addAttribute("project", new Project.ProjectBuilder().withName("New Project").build());
+			Role role = new Role.RoleBuilder().withName("placeholder").build();
+			List<Role> placeholderRole = new ArrayList<Role>();
+			placeholderRole.add(role);
+			model.addAttribute("project", new Project.ProjectBuilder().withName("New Project").withRoles(placeholderRole).build());
         }
 
 		List<Role> roles = roleService.findAll();
@@ -56,7 +61,10 @@ public class ProjectController
 	{
 		if(!model.containsAttribute("project")) 
 		{
-            model.addAttribute("project", new Project.ProjectBuilder().withName("New Project").build());
+			Role role = new Role.RoleBuilder().withName("placeholder").build();
+			List<Role> placeholderRole = new ArrayList<Role>();
+			placeholderRole.add(role);
+			model.addAttribute("project", new Project.ProjectBuilder().withName("New Project").withRoles(placeholderRole).build());
         }
 		
 		//Always want current roles
@@ -75,8 +83,9 @@ public class ProjectController
 	}
 	
 	@RequestMapping(value="/saveaddedproject", method = RequestMethod.POST)
-    public String saveAddedProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) 
+    public String saveAddedProject(@Valid Project project, @RequestParam(name="rolesNeeded") List<Role> rolesNeeded, BindingResult result, RedirectAttributes redirectAttributes) 
     {   
+		project.setRolesNeeded(rolesNeeded);
 		projectService.save(project);
         return "redirect:/index";
     }
